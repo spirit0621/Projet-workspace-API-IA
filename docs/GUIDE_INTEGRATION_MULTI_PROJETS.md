@@ -34,7 +34,7 @@ uvicorn server:app --reload --port 8000
 ## 2. Tester et Explorer : Documentation Interactive (Swagger)
 
 Une fois le serveur lancé, ouvrez votre navigateur sur :
-👉 **http://localhost:8000/docs**
+👉 [http://localhost:8000/docs](http://localhost:8000/docs)
 
 Vous y trouverez :
 

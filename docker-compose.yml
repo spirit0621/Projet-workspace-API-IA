@@ -1,0 +1,21 @@
+services:
+  google-workspace-hub:
+    build: .
+    container_name: google-workspace-hub
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      # Montage des fichiers d'authentification et secrets de votre machine
+      - ./.env:/app/.env:ro
+      - ./credentials.json:/app/credentials.json:ro
+      - ./token.json:/app/token.json
+      - ./usage_history.json:/app/usage_history.json
+      - ./recordings:/app/recordings
+    environment:
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3

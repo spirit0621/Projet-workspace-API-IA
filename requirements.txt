@@ -1,0 +1,12 @@
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib
+requests
+rich
+google-genai
+pydantic
+python-dotenv
+google-cloud-secret-manager
+fastapi>=0.110.0
+uvicorn[standard]>=0.28.0
+python-multipart>=0.0.9

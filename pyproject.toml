@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "google-workspace-hub"
+version = "1.0.0"
+description = "Hub d'API et microservice pour Google Workspace et Gemini AI"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "google-api-python-client",
+    "google-auth-httplib2",
+    "google-auth-oauthlib",
+    "requests",
+    "rich",
+    "google-genai",
+    "pydantic",
+    "python-dotenv",
+    "google-cloud-secret-manager",
+    "fastapi>=0.110.0",
+    "uvicorn[standard]>=0.28.0",
+    "python-multipart>=0.0.9"
+]
+
+[project.scripts]
+gassist = "google_assistant:main"
+gassist-api = "server:app"

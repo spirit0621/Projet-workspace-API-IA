@@ -26,7 +26,9 @@ Si vous ne souhaitez pas utiliser Docker :
 
 ```bash
 # Dans le dossier de ce projet avec votre venv actif :
-uvicorn server:app --reload --port 8000
+uvicorn src.server:app --reload --port 8000
+# Ou directement via le lanceur Windows :
+.\start_api.bat
 ```
 
 ---
@@ -145,8 +147,8 @@ pip install -e "c:\Users\alves\Desktop\Projet Perso\Projet API,IA,workspace"
 Ensuite, dans votre code :
 
 ```python
-import auth
-from services import assistant_calendar, assistant_drive, assistant_ai
+from src import auth
+from src.services import assistant_calendar, assistant_drive, assistant_ai
 
 creds = auth.get_credentials()
 

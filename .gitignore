@@ -14,3 +14,10 @@ recordings/
 __pycache__/
 *.pyc
 *.docx
+
+# Anciens fichiers racines locaux (désormais centralisés dans src/ et scripts/)
+auth.py
+server.py
+google_assistant.py
+create_tp2_docx.py
+services/

@@ -44,8 +44,16 @@ def get_credentials():
             root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
             root_creds_path = os.path.join(root_dir, 'credentials.json')
 
+            config_creds_path = os.path.join(root_dir, 'config', 'credentials.json')
+
             if client_config:
                 flow = InstalledAppFlow.from_client_config(client_config, SCOPES)
+                creds = flow.run_local_server(port=0)
+            elif os.path.exists(config_creds_path):
+                flow = InstalledAppFlow.from_client_secrets_file(config_creds_path, SCOPES)
+                creds = flow.run_local_server(port=0)
+            elif os.path.exists('config/credentials.json'):
+                flow = InstalledAppFlow.from_client_secrets_file('config/credentials.json', SCOPES)
                 creds = flow.run_local_server(port=0)
             elif os.path.exists('credentials.json'):
                 flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
@@ -54,7 +62,7 @@ def get_credentials():
                 flow = InstalledAppFlow.from_client_secrets_file(root_creds_path, SCOPES)
                 creds = flow.run_local_server(port=0)
             else:
-                print("Erreur: credentials.json introuvable (ni en local, ni dans Secret Manager).")
+                print("Erreur: credentials.json introuvable (dans config/, en local ou dans Secret Manager).")
                 sys.exit(1)
 
             try:

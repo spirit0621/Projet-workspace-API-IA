@@ -12,3 +12,8 @@ venv/
 docs/
 .pytest_cache/
 tests/
+.env
+config/credentials.json
+config/token.json
+data/
+recordings/

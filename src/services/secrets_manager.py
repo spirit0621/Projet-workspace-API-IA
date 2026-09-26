@@ -10,15 +10,24 @@ except ImportError:
 PROJECT_ID = os.getenv("GCP_PROJECT_ID", "gen-lang-client-0497141502")
 
 def _find_file_path(filename: str) -> Optional[str]:
-    """Recherche un fichier en local (CWD ou racine du projet)."""
-    if os.path.exists(filename):
-        return filename
-    root_candidate = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), filename)
-    if os.path.exists(root_candidate):
-        return root_candidate
+    """Recherche un fichier en local (dossier config/, CWD ou racine du projet)."""
+    root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    candidates = [
+        os.path.join(root_dir, "config", filename),
+        os.path.join("config", filename),
+        filename,
+        os.path.join(root_dir, filename),
+    ]
+    for c in candidates:
+        if os.path.exists(c):
+            return c
     return None
 
 def get_secret(secret_id: str, version_id: str = "latest") -> Optional[str]:
+    """
+    Récupère la valeur d'un secret depuis Google Cloud Secret Manager.
+    Retourne None si l'API n'est pas installée, non configurée ou en cas d'erreur.
+    """
     if secretmanager is None:
         return None
     try:
@@ -30,6 +39,12 @@ def get_secret(secret_id: str, version_id: str = "latest") -> Optional[str]:
         return None
 
 def load_gemini_api_key() -> Optional[str]:
+    """
+    Charge la clé Gemini API :
+    1. Depuis les variables d'environnement actuelles (ex: chargées par .env).
+    2. Sinon depuis Google Secret Manager (secret 'gemini-api-key').
+    Injecte automatiquement la clé dans os.environ['GEMINI_API_KEY'].
+    """
     key = os.getenv("GEMINI_API_KEY")
     if key:
         return key.strip()
@@ -49,6 +64,11 @@ def load_gemini_api_key() -> Optional[str]:
     return None
 
 def load_oauth_token_dict() -> Optional[Dict[str, Any]]:
+    """
+    Charge les informations du token OAuth :
+    1. Depuis le fichier local token.json s'il existe.
+    2. Sinon depuis Secret Manager (secret 'google-oauth-token').
+    """
     token_path = _find_file_path("token.json")
     if token_path:
         try:
@@ -66,6 +86,11 @@ def load_oauth_token_dict() -> Optional[Dict[str, Any]]:
     return None
 
 def load_oauth_credentials_dict() -> Optional[Dict[str, Any]]:
+    """
+    Charge la configuration client OAuth :
+    1. Depuis le fichier local credentials.json s'il existe.
+    2. Sinon depuis Secret Manager (secret 'google-oauth-credentials').
+    """
     creds_path = _find_file_path("credentials.json")
     if creds_path:
         try:
@@ -83,7 +108,16 @@ def load_oauth_credentials_dict() -> Optional[Dict[str, Any]]:
     return None
 
 def save_oauth_token_dict(token_info: Dict[str, Any]) -> None:
-    target = _find_file_path("token.json") or "token.json"
+    """
+    Tente de sauvegarder le token OAuth dans config/token.json (ou token.json) en local.
+    Silencieux en cas d'impossibilité d'écriture.
+    """
+    root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    target = _find_file_path("token.json")
+    if not target:
+        config_dir = os.path.join(root_dir, "config")
+        os.makedirs(config_dir, exist_ok=True)
+        target = os.path.join(config_dir, "token.json")
     try:
         with open(target, "w", encoding="utf-8") as f:
             json.dump(token_info, f, indent=2)

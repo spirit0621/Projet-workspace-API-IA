@@ -6,12 +6,10 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      # Montage des fichiers d'authentification et secrets de votre machine
+      # Montage des dossiers de configuration et données
       - ./.env:/app/.env:ro
-      - ./credentials.json:/app/credentials.json:ro
-      - ./token.json:/app/token.json
-      - ./usage_history.json:/app/usage_history.json
-      - ./recordings:/app/recordings
+      - ./config:/app/config
+      - ./data:/app/data
     environment:
       - PYTHONUNBUFFERED=1
     healthcheck:

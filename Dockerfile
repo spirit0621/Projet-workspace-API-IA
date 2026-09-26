@@ -5,17 +5,17 @@ FROM python:3.11-slim
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Installation de ffmpeg pour le traitement des fichiers audio et curl pour le healthcheck
-RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
+# Installation de ffmpeg pour l'audio et curl pour le healthcheck
+RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Installation des dépendances Python
+# Installation des dépendances Python avec timeout de sécurité
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --default-timeout=100 -r requirements.txt
 
 # Copie du code source modulaire
 COPY src/ ./src/

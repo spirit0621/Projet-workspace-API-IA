@@ -34,12 +34,24 @@ DEFAULT_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.7-flash")
 FALLBACK_MODELS = [DEFAULT_MODEL, "gemini-3.7-flash", "gemini-3.5-flash", "gemini-3.6-flash", "gemini-3.8-flash", "gemini-3.5-flash-lite"]
 
 def _find_history_file() -> str:
-    if os.path.exists("usage_history.json"):
+    root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    candidates = [
+        os.path.join(root_dir, "data", "usage_history.json"),
+        os.path.join("data", "usage_history.json"),
+        "usage_history.json",
+        os.path.join(root_dir, "usage_history.json")
+    ]
+    for c in candidates:
+        if os.path.exists(c):
+            return c
+    # Par défaut, enregistrer dans data/
+    data_dir = os.path.join(root_dir, "data")
+    try:
+        os.makedirs(data_dir, exist_ok=True)
+        return os.path.join(data_dir, "usage_history.json")
+    except Exception:
         return "usage_history.json"
-    root_candidate = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "usage_history.json")
-    if os.path.exists(root_candidate):
-        return root_candidate
-    return "usage_history.json"
+
 
 HISTORY_FILE = _find_history_file()
 MONTHLY_TOKEN_BUDGET = 1_000_000
@@ -56,6 +68,10 @@ def get_client():
         return None
 
 def generate_content_with_retry(client, contents, config=None, model=None, max_retries_per_model=2):
+    """
+    Exécute client.models.generate_content avec retries exponentiels et bascule
+    automatique sur des modèles de secours en cas d'erreur 503 ou 429.
+    """
     primary = model or DEFAULT_MODEL
     models_to_try = [primary]
     for m in FALLBACK_MODELS:
@@ -139,7 +155,9 @@ def _log_and_display_usage(response):
     except Exception as e:
         print(f"Erreur lors du calcul des coûts : {e}")
 
-# 1. SUMMARIZE
+# ─────────────────────────────────────────────────────
+# 1. SUMMARIZE : Résumé d'un document Google Docs
+# ─────────────────────────────────────────────────────
 def summarize(creds, doc_id):
     print("⏳ Lecture du document...")
     try:
@@ -171,7 +189,9 @@ def summarize(creds, doc_id):
         print(f"Erreur lors de la génération du résumé : {e}")
         return None
 
-# 2. PARSE_EVENT
+# ─────────────────────────────────────────────────────
+# 2. PARSE_EVENT : Langage naturel → Calendar
+# ─────────────────────────────────────────────────────
 class CalendarEvent(BaseModel):
     summary: str = Field(description="Le titre de l'événement.")
     start_time: str = Field(description="La date et heure de début au format RFC3339 (ex: 2026-09-06T10:00:00).")
@@ -209,7 +229,9 @@ def parse_event(creds, prompt):
         print(f"Erreur lors de l'analyse ou de la création de l'événement : {e}")
         return None
 
-# 3. ASK_SHEET
+# ─────────────────────────────────────────────────────
+# 3. ASK_SHEET : Question en langage naturel sur un Sheet
+# ─────────────────────────────────────────────────────
 def ask_sheet(creds, sheet_id, question):
     print("⏳ Lecture des données du Sheet...")
     try:
@@ -247,7 +269,9 @@ def ask_sheet(creds, sheet_id, question):
         print(f"Erreur lors de l'analyse : {e}")
         return None
 
-# 4. PROOFREAD
+# ─────────────────────────────────────────────────────
+# 4. PROOFREAD : Relecture et correction d'un Doc
+# ─────────────────────────────────────────────────────
 def proofread(creds, doc_id):
     print("⏳ Lecture du document...")
     try:
@@ -285,7 +309,9 @@ def proofread(creds, doc_id):
         print(f"Erreur lors de la relecture : {e}")
         return None
 
-# 5. GENERATE_SLIDES
+# ─────────────────────────────────────────────────────
+# 5. GENERATE_SLIDES : Génération auto de présentation
+# ─────────────────────────────────────────────────────
 class Slide(BaseModel):
     title: str = Field(description="Le titre de la diapositive.")
     bullets: list[str] = Field(description="Liste de 3 à 5 points clés pour la diapositive.")
@@ -346,7 +372,9 @@ def generate_slides(creds, topic, num_slides=5):
         print(f"Erreur lors de la génération de la présentation : {e}")
         return None
 
-# 6. GENERATE_DOC
+# ─────────────────────────────────────────────────────
+# 6. GENERATE_DOC : Générer du texte et l'injecter
+# ─────────────────────────────────────────────────────
 def generate_doc(creds, doc_id, prompt):
     print("⏳ Génération du contenu par Gemini...")
     client = get_client()
@@ -365,7 +393,9 @@ def generate_doc(creds, doc_id, prompt):
         print(f"Erreur lors de la génération ou insertion : {e}")
         return None
 
-# 7. CLASSIFY_SHEET
+# ─────────────────────────────────────────────────────
+# 7. CLASSIFY_SHEET : Classifier des données Sheets
+# ─────────────────────────────────────────────────────
 class ClassificationResult(BaseModel):
     categories: list[str] = Field(description="La liste des catégories assignées, une pour chaque ligne lue, dans le même ordre.")
 
@@ -416,7 +446,9 @@ def classify_sheet(creds, sheet_id, read_range, write_range, categories_str):
         print(f"Erreur lors de la classification : {e}")
         return None
 
-# 8. ESTIMATE_COST
+# ─────────────────────────────────────────────────────
+# 8. ESTIMATE_COST : Estimer le coût d'un document
+# ─────────────────────────────────────────────────────
 def estimate_cost(creds, doc_id):
     print("⏳ Lecture du document...")
     try:
@@ -449,7 +481,9 @@ def estimate_cost(creds, doc_id):
         print(f"Erreur lors de l'estimation : {e}")
         return None
 
-# 9. STATS
+# ─────────────────────────────────────────────────────
+# 9. STATS : Afficher les statistiques de consommation
+# ─────────────────────────────────────────────────────
 def stats():
     target_file = _find_history_file()
     if not os.path.exists(target_file):
@@ -487,7 +521,9 @@ def stats():
         print(f"Erreur lors de la lecture des statistiques : {e}")
         return None
 
-# 10. MEETING
+# ─────────────────────────────────────────────────────
+# 10. MEETING : Synthèse audio de réunion + Docs + Tasks
+# ─────────────────────────────────────────────────────
 class MeetingActionItem(BaseModel):
     assignee: str = Field(description="Nom de la personne responsable (ex: 'Victor', 'Marc', 'Alice' ou 'Équipe').")
     task: str = Field(description="Description claire et précise de la tâche.")

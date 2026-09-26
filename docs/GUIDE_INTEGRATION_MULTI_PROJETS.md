@@ -178,31 +178,31 @@ curl "http://localhost:8000/api/ai/stats"
 
 ## 4. Tableau Récapitulatif des Endpoints Clés
 
-| Service            | Méthode   | Route                                  | Description                                         |
-| :----------------- | :--------- | :------------------------------------- | :-------------------------------------------------- |
-| **Santé**   | `GET`    | `/health`                            | Statut du hub, présence des jetons Google & Gemini |
-| **Drive**    | `GET`    | `/api/drive/search?query=...`        | Recherche de fichiers                               |
-| **Drive**    | `POST`   | `/api/drive/create-folder`           | Créer un dossier                                   |
-| **Drive**    | `POST`   | `/api/drive/upload`                  | Téléverser un fichier multipart                   |
-| **Drive**    | `POST`   | `/api/drive/share`                   | Partager un fichier par e-mail                      |
-| **Calendar** | `GET`    | `/api/calendar/events`               | Liste des prochains événements                    |
-| **Calendar** | `POST`   | `/api/calendar/events`               | Créer un événement planifié                     |
-| **Calendar** | `DELETE` | `/api/calendar/events/{id}`          | Supprimer un événement                            |
-| **Docs**     | `GET`    | `/api/docs/{doc_id}`                 | Lire le contenu textuel                             |
-| **Docs**     | `POST`   | `/api/docs/{doc_id}/append`          | Ajouter du texte en fin de document                 |
-| **Docs**     | `POST`   | `/api/docs/{doc_id}/replace`         | Remplacer du texte                                  |
-| **Docs**     | `POST`   | `/api/docs/create-from-template`     | Générer depuis un modèle                         |
-| **Sheets**   | `GET`    | `/api/sheets/{id}/range`             | Lire les cellules d'une plage                       |
-| **Sheets**   | `POST`   | `/api/sheets/{id}/formula`           | Écrire une formule                                 |
-| **Slides**   | `POST`   | `/api/slides/create`                 | Créer une présentation                            |
-| **Slides**   | `POST`   | `/api/slides/{id}/replace-variables` | Remplacer`{{variables}}`                          |
-| **Tasks**    | `GET`    | `/api/tasks/{list_id}/pending`       | Liste des tâches en cours                          |
-| **Tasks**    | `POST`   | `/api/tasks/{list_id}/tasks`         | Ajouter une tâche                                  |
-| **Forms**    | `POST`   | `/api/forms`                         | Créer un formulaire                                |
-| **Forms**    | `GET`    | `/api/forms/{id}/responses`          | Récupérer les réponses                           |
-| **IA**       | `POST`   | `/api/ai/ask-sheet`                  | Analyser un Sheet en langage naturel                |
-| **IA**       | `POST`   | `/api/ai/summarize-doc`              | Résumer un Google Doc                              |
-| **IA**       | `POST`   | `/api/ai/parse-event`                | Créer un événement depuis une phrase             |
-| **IA**       | `POST`   | `/api/ai/generate-slides`            | Générer un diaporama complet via Gemini           |
-| **IA**       | `GET`    | `/api/ai/stats`                      | Consulter le budget et consommation de tokens       |
-| **IA**       | `POST`   | `/api/ai/meeting-audio`              | Générer un compte-rendu Docs depuis un audio      |
+| Service | Méthode | Route | Description |
+| :--- | :--- | :--- | :--- |
+| **Santé** | `GET` | `/health` | Statut du hub, présence des jetons Google & Gemini |
+| **Drive** | `GET` | `/api/drive/search?query=...` | Recherche de fichiers |
+| **Drive** | `POST` | `/api/drive/create-folder` | Créer un dossier |
+| **Drive** | `POST` | `/api/drive/upload` | Téléverser un fichier multipart |
+| **Drive** | `POST` | `/api/drive/share` | Partager un fichier par e-mail |
+| **Calendar** | `GET` | `/api/calendar/events` | Liste des prochains événements |
+| **Calendar** | `POST` | `/api/calendar/events` | Créer un événement planifié |
+| **Calendar** | `DELETE` | `/api/calendar/events/{id}` | Supprimer un événement |
+| **Docs** | `GET` | `/api/docs/{doc_id}` | Lire le contenu textuel |
+| **Docs** | `POST` | `/api/docs/{doc_id}/append` | Ajouter du texte en fin de document |
+| **Docs** | `POST` | `/api/docs/{doc_id}/replace` | Remplacer du texte |
+| **Docs** | `POST` | `/api/docs/create-from-template` | Générer depuis un modèle |
+| **Sheets** | `GET` | `/api/sheets/{id}/range` | Lire les cellules d'une plage |
+| **Sheets** | `POST` | `/api/sheets/{id}/formula` | Écrire une formule |
+| **Slides** | `POST` | `/api/slides/create` | Créer une présentation |
+| **Slides** | `POST` | `/api/slides/{id}/replace-variables` | Remplacer `{{variables}}` |
+| **Tasks** | `GET` | `/api/tasks/{list_id}/pending` | Liste des tâches en cours |
+| **Tasks** | `POST` | `/api/tasks/{list_id}/tasks` | Ajouter une tâche |
+| **Forms** | `POST` | `/api/forms` | Créer un formulaire |
+| **Forms** | `GET` | `/api/forms/{id}/responses` | Récupérer les réponses |
+| **IA** | `POST` | `/api/ai/ask-sheet` | Analyser un Sheet en langage naturel |
+| **IA** | `POST` | `/api/ai/summarize-doc` | Résumer un Google Doc |
+| **IA** | `POST` | `/api/ai/parse-event` | Créer un événement depuis une phrase |
+| **IA** | `POST` | `/api/ai/generate-slides` | Générer un diaporama complet via Gemini |
+| **IA** | `GET` | `/api/ai/stats` | Consulter le budget et consommation de tokens |
+| **IA** | `POST` | `/api/ai/meeting-audio` | Générer un compte-rendu Docs depuis un audio |

@@ -29,9 +29,9 @@ Il possède **deux moteurs bien distincts** :
 
 Ces commandes sont instantanées, ne nécessitent pas la clé API Gemini et ne coûtent rien. Elles sont idéales pour l'automatisation pure (manipulation de fichiers, transferts, formatage).
 
-### Exemples de commandes que vous pouvez écrire sans rien dépenser :
+### Exemples de commandes que vous pouvez écrire sans rien dépenser
 
-* **Manipuler le Drive :**
+* **Manipuler le Drive**
 
   ```bash
   # Créer un dossier
@@ -40,7 +40,8 @@ Ces commandes sont instantanées, ne nécessitent pas la clé API Gemini et ne c
   # Uploader un PDF
   .\gassist drive upload "C:\rapport.pdf"
   ```
-* **Travailler sur Docs :**
+
+* **Travailler sur Docs**
 
   ```bash
   # Ajouter un paragraphe à la fin d'un contrat
@@ -52,19 +53,22 @@ Ces commandes sont instantanées, ne nécessitent pas la clé API Gemini et ne c
   # Exporter en fichier Word (.docx)
   .\gassist docs export_docx "ID_DU_DOC" "contrat.docx"
   ```
-* **Travailler sur Sheets :**
+
+* **Travailler sur Sheets**
 
   ```bash
   # Mettre une ligne en vert
   .\gassist sheets format_green "ID_SHEET" "A1:E1"
   ```
-* **Gérer son Calendrier :**
+
+* **Gérer son Calendrier**
 
   ```bash
   # Lister les 5 prochaines réunions
   .\gassist calendar list_events --max 5
   ```
-* **Générer des PDF (Slides & Docs) :**
+
+* **Générer des PDF (Slides & Docs)**
 
   ```bash
   .\gassist slides export_pdf "ID_PRES" "ma_presentation.pdf"
@@ -76,23 +80,26 @@ Ces commandes sont instantanées, ne nécessitent pas la clé API Gemini et ne c
 
 Ces commandes font appel à l'Intelligence Artificielle **Gemini 3.6 Flash**. Vous pouvez les identifier car elles commencent par `.\gassist ai ...`.
 
-### Ce que l'IA peut faire pour vous :
+### Ce que l'IA peut faire pour vous
 
 * **Rédiger et Injecter du contenu (`generate_doc`)** : Demandez à l'IA d'écrire un article de blog, un mail ou une conclusion, et elle l'insérera directement à la fin de votre Google Docs.
 
   ```bash
   .\gassist ai generate_doc "ID_DOC" "Rédige une conclusion optimiste de 3 lignes"
   ```
+
 * **Créer des présentations de A à Z (`generate_slides`)** : L'IA planifie le contenu, crée les titres, rédige les *bullet points*, et génère un Google Slides complet (incluant une intro et une conclusion automatiques).
 
   ```bash
   .\gassist ai generate_slides "Le futur du télétravail" --num_slides 6
   ```
+
 * **Classifier des données Intelligemment (`classify_sheet`)** : Marre de trier à la main ? L'IA lit une colonne de votre Sheets et attribue des étiquettes (ex: Positif/Négatif) dans une autre colonne.
 
   ```bash
   .\gassist ai classify_sheet "ID_SHEET" "A1:A20" "B1:B20" "Urgent, Normal, Ignorer"
   ```
+
 * **Discuter avec vos données (`ask_sheet`, `summarize`, `proofread`)** : L'IA lit vos fichiers pour répondre à des questions (quel est le meilleur produit de ce tableur ?), pour résumer un long contrat de 50 pages, ou pour corriger vos fautes d'orthographe.
 
 ---
@@ -136,9 +143,10 @@ Si vous avez déjà un enregistrement sur votre PC (`.wav`, `.mp3`, `.m4a`) :
 .\gassist record process "recordings\audio.wav" --title "Synthèse Cours"
 ```
 
-### D. Ce que le document final contient :
+### D. Ce que le document final contient
 
 À la fin du traitement, le document généré (accessible en ligne via **Google Docs** et sauvegardé en local dans **`recordings/*.docx`**) contient automatiquement :
+
 1. **📌 Résumé Exécutif** : Vue synthétique en 3 à 5 phrases.
 2. **💡 Points Clés & Débats** : Tous les concepts, arguments et notions abordées.
 3. **✔ Décisions Actées** : Les conclusions fermes prises.
@@ -160,7 +168,7 @@ Avant de lancer un résumé sur un document qui vous semble très long, utilisez
 .\gassist ai estimate_cost "ID_DU_DOC"
 ```
 
-*L'assistant lira le document et vous répondra par exemple : "Ce document fait 14 500 tokens. L'analyser coûtera environ 14 500 tokens."*
+Exemple de réponse : *L'assistant lira le document et vous répondra : "Ce document fait 14 500 tokens. L'analyser coûtera environ 14 500 tokens."*
 
 ### B. L'affichage après action
 

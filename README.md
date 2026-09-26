@@ -38,7 +38,7 @@ Une solution centralisée, modulaire et prête pour la production pour automatis
    - [AI Gemini](#-ai-gemini)
 7. [Standard vs IA (Coûts & Tokens)](#-standard-vs-ia-coûts--tokens)
 8. [Guides et Documentation Complémentaire](#-guides-et-documentation-complémentaire)
-9. [Dépannage](#-dépannage)
+9. [Dépannage & Astuces Docker](#-dépannage--astuces-docker)
 
 ---
 
@@ -142,15 +142,25 @@ python -m src.auth
 Le serveur tourne en tâche de fond de façon isolée et accessible à tous vos autres projets :
 
 ```bash
-# Lancer le conteneur en arrière-plan
-docker compose up -d
+# 1. Démarrer (ou reconstruire après modification)
+docker compose up -d --build
 
-# Voir les logs en direct
+# 2. Vérifier l'état du conteneur
+docker compose ps
+
+# 3. Consulter les logs en temps réel
 docker compose logs -f
 
-# Arrêter le conteneur
+# 4. Arrêter le conteneur
 docker compose down
 ```
+
+> [!TIP]
+> **Affichage dans Docker Desktop :**
+> - Dans l'onglet **"Containers"**, vous verrez le conteneur actif : **`google-workspace-hub`** (point vert opérationnel).
+> - L'onglet **"Build history"** conserve simplement l'historique des constructions passées pour votre information.
+
+---
 
 ### Option B : Démarrage de l'API en local
 
@@ -163,6 +173,8 @@ Avec votre environnement virtuel Python activé :
 # Ou directement avec Uvicorn :
 uvicorn src.server:app --reload --port 8000
 ```
+
+---
 
 ### Option C : Utilisation en ligne de commande (CLI)
 
@@ -335,20 +347,23 @@ Réponse JSON :
 
 ---
 
-## 🔧 Dépannage
+## 🔧 Dépannage & Astuces Docker
+
+### Comprendre l'affichage Docker Desktop
+- **Onglet "Containers"** : C'est ici que vit votre serveur actif **`google-workspace-hub`**.
+- **Onglet "Build history"** : Conserve simplement l'historique des compilations passées. Vous pouvez supprimer les anciennes lignes avec la poubelle 🗑️.
 
 ### Erreur `credentials.json introuvable`
 Vérifiez que le fichier téléchargé depuis Google Cloud Console est bien nommé `credentials.json` et se trouve dans le dossier `config/credentials.json`.
 
 ### Erreur `token expiré / ré-authentification`
-Supprimez simplement `config/token.json` et relancez une commande. Une nouvelle page Google s'ouvrira pour renouveler l'accès :
+Supprimez simplement `config/token.json` et relancez une commande pour ouvrir la page Google d'autorisation :
 ```powershell
 Remove-Item config/token.json
 python -m src.auth
 ```
 
 ### Port 8000 déjà utilisé
-Si vous lancez l'API et que le port 8000 est occupé, spécifiez un autre port :
-```powershell
-uvicorn src.server:app --port 8080
-```
+Si le port 8000 est déjà occupé par un autre processus sur votre machine :
+- En local : `uvicorn src.server:app --port 8080`
+- Dans Docker : modifiez la ligne `ports: - "8080:8000"` dans [docker-compose.yml](file:///c:/Users/alves/Desktop/Projet%20Perso/Projet%20API,IA,workspace/docker-compose.yml).

@@ -1,0 +1,16 @@
+# Environnements Virtuels
+venv/
+env/
+.venv/
+.env
+
+# Secrets / Identifiants (CRITIQUE)
+credentials.json
+token.json
+usage_history.json
+recordings/
+
+# Fichiers auto-générés & caches
+__pycache__/
+*.pyc
+*.docx

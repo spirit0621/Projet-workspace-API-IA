@@ -28,7 +28,7 @@ Si vous ne souhaitez pas utiliser Docker :
 # Dans le dossier de ce projet avec votre venv actif :
 uvicorn src.server:app --reload --port 8000
 # Ou directement via le lanceur Windows :
-.\start_api.bat
+.\scripts\start_api.bat
 ```
 
 ---

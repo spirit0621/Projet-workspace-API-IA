@@ -1,6 +1,6 @@
 # 🛠️ Sommaire des Fonctions de l'Assistant
 
-Ce document liste l'ensemble des commandes et sous-commandes disponibles dans l'Assistant Ultime Google Workspace (`google_assistant.py`), classées par service.
+Ce document liste l'ensemble des commandes et sous-commandes disponibles dans l'Assistant Ultime Google Workspace (`src/google_assistant.py`), classées par service (`src/services/`).
 
 ## 📑 Table des Matières
 

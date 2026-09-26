@@ -24,5 +24,9 @@ dependencies = [
 ]
 
 [project.scripts]
-gassist = "google_assistant:main"
-gassist-api = "server:app"
+gassist = "src.google_assistant:main"
+gassist-api = "src.server:app"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]

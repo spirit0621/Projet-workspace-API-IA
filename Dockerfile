@@ -17,14 +17,14 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copie du code source
-COPY services/ ./services/
-COPY auth.py .
-COPY server.py .
-COPY google_assistant.py .
+# Copie du code source modulaire
+COPY src/ ./src/
+
+# Configuration du PYTHONPATH pour les imports du package src
+ENV PYTHONPATH=/app/src:/app
 
 # Exposition du port HTTP
 EXPOSE 8000
 
 # Commande de démarrage du serveur FastAPI
-CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "src.server:app", "--host", "0.0.0.0", "--port", "8000"]

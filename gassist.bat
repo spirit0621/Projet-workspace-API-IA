@@ -1,2 +1,3 @@
 @echo off
-python "%~dp0google_assistant.py" %*
+set PYTHONPATH=%~dp0src;%PYTHONPATH%
+python "%~dp0src\google_assistant.py" %*
